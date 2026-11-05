@@ -1,49 +1,52 @@
 name: Build Android APK
+
 on:
-  workflow_dispatch:
   push:
     branches: [main]
-    paths:
-      - 'index.html'
-      - 'manifest.webmanifest'
-      - 'icon-192.png'
-      - 'icon-512.png'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'capacitor.config.json'
-      - 'scripts/**'
-      - '.github/workflows/android.yml'
+  workflow_dispatch:
+
 permissions:
   contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
+
+      - name: Install Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Install dependencies
         run: npm install
-      - name: Prepare web app
-        run: npm run build:web
-      - name: Generate Android project
-        run: npx cap add android
-      - name: Sync Android project
-        run: npx cap sync android
+
+      - name: Add Capacitor Android (if missing)
+        run: |
+          if [ ! -d android ]; then
+            npx cap add android
+          fi
+
+      - name: Sync Android
+        run: npm run cap:sync
+
       - name: Build debug APK
-        run: cd android && chmod +x gradlew && ./gradlew assembleDebug
+        run: npm run android:debug
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: marivan-prayer-times-debug-apk
+          name: marivan-android-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
-          if-no-files-found: error
-          retention-days: 30
