@@ -1,0 +1,36 @@
+name: Build Android APK (manual)
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Accept Android SDK licenses
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses
+      - name: Install Android SDK packages
+        run: "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'platform-tools' 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Install dependencies
+        run:  pm install
+      - name: Add Capacitor Android (if missing)
+        run: if [ ! -d android ]; then npx cap add android; fi
+      - name: Sync Android
+        run:  pm run cap:sync
+      - name: Build debug APK
+        run:  pm run android:debug
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: marivan-android-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
