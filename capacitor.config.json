@@ -1,0 +1,6 @@
+{
+  "appId": "ir.marivan.prayertimes",
+  "appName": "اوقات شرعی مریوان",
+  "webDir": "www",
+  "server": { "androidScheme": "https" }
+}
