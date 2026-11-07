@@ -2,7 +2,7 @@
 (() => {
   const BASE_ID = 1700000000;
   const WINDOW_DAYS = 30;
-  const MONTHS = { 8: "آبان", 9: "آذر", 10: "بهمن", 11: "بهمن", 12: "اسفند" };
+  const MONTHS = { 8: "آبان", 9: "آذر", 10: "دی", 11: "بهمن", 12: "اسفند" };
   const NAMES = ["شروع روز", "نماز صبح", "طلوع خورشید", "نماز ظهر", "نماز عصر", "نماز مغرب", "پایان روز", "نماز عشا", "یک‌سوم شب", "دو‌سوم شب"];
   const KEYS = ["start", "fajr", "sunrise", "zuhr", "asr", "maghrib", "endday", "isha", "oneThird", "twoThird"];
   const $ = (s) => document.querySelector(s);
