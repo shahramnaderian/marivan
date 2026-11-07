@@ -17,17 +17,24 @@ jobs:
           distribution: temurin
           java-version: '21'
       - name: Accept Android SDK licenses
-        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses
+        shell: bash
+        run: |
+          SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -mindepth 2 -maxdepth 2 -name sdkmanager -type f | sort -V | tail -n 1)"
+          test -n "$SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses
       - name: Install Android SDK packages
-        run: "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'platform-tools' 'platforms;android-35' 'build-tools;35.0.0'
+        shell: bash
+        run: |
+          SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -mindepth 2 -maxdepth 2 -name sdkmanager -type f | sort -V | tail -n 1)"
+          "$SDKMANAGER" --install 'platform-tools' 'platforms;android-35' 'build-tools;35.0.0'
       - name: Install dependencies
-        run:   px --yes npm@10 install
+        run: npm ci
       - name: Add Capacitor Android (if missing)
         run: if [ ! -d android ]; then npx cap add android; fi
       - name: Sync Android
-        run:   px --yes npm@10 run cap:sync
+        run: npm run cap:sync
       - name: Build debug APK
-        run:   px --yes npm@10 run android:debug
+        run: npm run android:debug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
