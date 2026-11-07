@@ -2,7 +2,7 @@
 (() => {
   const BASE_ID = 1700000000;
   const WINDOW_DAYS = 30;
-  const MONTHS = { 8: "آبان", 9: "آذر", 10: "دی", 11: "بهمن", 12: "اسفند" };
+  const MONTHS = { 8: "آبان", 9: "آذر", 10: "بهمن", 11: "بهمن", 12: "اسفند" };
   const NAMES = ["شروع روز", "نماز صبح", "طلوع خورشید", "نماز ظهر", "نماز عصر", "نماز مغرب", "پایان روز", "نماز عشا", "یک‌سوم شب", "دو‌سوم شب"];
   const KEYS = ["start", "fajr", "sunrise", "zuhr", "asr", "maghrib", "endday", "isha", "oneThird", "twoThird"];
   const $ = (s) => document.querySelector(s);
@@ -39,7 +39,7 @@
       const lead = Number(row.lead ?? 5);
       KEYS.forEach((key, index) => {
         const event = row.events[key];
-        if (!event?.enabled || !event.time || !/^([01]\\d|2[0-3]):[0-5]\\d$/.test(event.time)) return;
+        if (!event?.enabled || !event.time || !/^([01]\d|2[0-3]):[0-5]\d$/.test(event.time)) return;
         const [hour, minute] = event.time.split(":").map(Number);
         const at = new Date(day);
         at.setHours(hour, minute, 0, 0);
