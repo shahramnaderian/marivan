@@ -33,7 +33,7 @@ jobs:
           packages: 'platform-tools'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       - name: Add Capacitor Android (if missing)
         run: |
