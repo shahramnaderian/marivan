@@ -6,7 +6,7 @@
   const NAMES = ["شروع روز", "نماز صبح", "طلوع خورشید", "نماز ظهر", "نماز عصر", "نماز مغرب", "پایان روز", "نماز عشا", "یک‌سوم شب", "دو‌سوم شب"];
   const KEYS = ["start", "fajr", "sunrise", "zuhr", "asr", "maghrib", "endday", "isha", "oneThird", "twoThird"];
   const $ = (s) => document.querySelector(s);
-  const plugin = () => window.Capacitor?.Plugins?.LocalNotifications;
+  const plugin = () => window.Capacitor?.Plugins?.LocalNotifications || window.Capacitor?.registerPlugin?.("LocalNotifications");
 
   function jalaliParts(date) {
     const parts = new Intl.DateTimeFormat("en-US-u-ca-persian-nu-latn", {
