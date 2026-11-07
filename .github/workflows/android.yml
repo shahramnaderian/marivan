@@ -36,6 +36,7 @@ jobs:
         run: |
           SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | sort -V | tail -n 1)"
           test -n "$SDKMANAGER"
+          set +o pipefail
           yes | "$SDKMANAGER" --licenses
 
       - name: Install Android SDK packages
